@@ -4,16 +4,16 @@ RSpec.describe "Users", type: :request do
 
   describe "POST /signup" do
     context "with matching password confirmation" do
-      let!(:user_params) do 
-        { 
-          username: "test_user", 
-          password: "sup3r-secret", 
-          password_confirmation: "sup3r-secret", 
-          image_url: "https://via.placeholder.com/150", 
-          bio: "bio" 
-        } 
+      let!(:user_params) do
+        {
+          username: "test_user",
+          password: "sup3r-secret",
+          password_confirmation: "sup3r-secret",
+          image_url: "https://via.placeholder.com/150",
+          bio: "bio"
+        }
       end
-      
+
       it "creates a new user" do
         expect { post "/signup", params: user_params }.to change(User, :count).by(1)
       end
@@ -23,13 +23,13 @@ RSpec.describe "Users", type: :request do
 
         expect(User.last.authenticate(user_params[:password])).to eq(User.last)
       end
-      
+
       it "saves the user id in the session" do
         post "/signup", params: user_params
 
         expect(session[:user_id]).to eq(User.last.id)
       end
-      
+
       it "returns the user as JSON" do
         post "/signup", params: user_params
 
@@ -43,21 +43,21 @@ RSpec.describe "Users", type: :request do
 
       it "returns a 201 (Created) HTTP status code" do
         post "/signup", params: user_params
-        
+
         expect(response).to have_http_status(:created)
       end
 
     end
 
     context "with no matching password confirmation" do
-      let!(:user_params) do 
-        { 
+      let!(:user_params) do
+        {
           username: "test_user",
           password: "sup3r-secret",
           password_confirmation: "wrong",
-          image_url: "https://via.placeholder.com/150", 
+          image_url: "https://via.placeholder.com/150",
           bio: "bio"
-        } 
+        }
       end
 
       it "does not save the user" do
@@ -77,16 +77,16 @@ RSpec.describe "Users", type: :request do
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
-      
+
     end
 
     context "with invalid data" do
-      let!(:user_params) do 
-        { 
+      let!(:user_params) do
+        {
           password: "sup3r-secret",
-          image_url: "https://via.placeholder.com/150", 
+          image_url: "https://via.placeholder.com/150",
           bio: "bio"
-        } 
+        }
       end
 
       it "does not save the user" do
@@ -143,5 +143,5 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
   end
-  
+
 end

@@ -20,7 +20,7 @@ RSpec.describe User, type: :model do
       user = User.create(username: "test_user", password: "sup3r-secret", image_url: "https://via.placeholder.com/150", bio: "bio")
       expect(user.authenticate("sup3r-secret")).to eq(user)
     end
-    
+
     it "returns false if credentials don't match" do
       user = User.create(username: "test_user", password: "sup3r-secret", image_url: "https://via.placeholder.com/150", bio: "bio")
       expect(user.authenticate("nope")).to be(false)
